@@ -8,6 +8,7 @@ from django.urls import reverse
 from ninja.conf import settings as ninja_settings
 from ninja.responses import Response
 from ninja.types import DictStrAny
+from ninja.utils import local_templates_engine
 
 if TYPE_CHECKING:
     # if anyone knows a cleaner way to make mypy happy - welcome
@@ -18,11 +19,7 @@ __all__ = ["default_home", "openapi_json", "openapi_view", "openapi_view_cdn"]
 
 render_swagger = ninja_settings.DOCS_VIEW == "swagger"
 view_tpl = "ninja/swagger.html" if render_swagger else "ninja/redoc.html"
-view_cdn_tpl = (
-    "../templates/ninja/swagger_cdn.html"
-    if render_swagger
-    else "../templates/ninja/redoc_cdn.html"
-)
+view_cdn_tpl = "ninja/swagger_cdn.html" if render_swagger else "ninja/redoc_cdn.html"
 
 
 def default_home(request: HttpRequest, api: "NinjaAPI") -> NoReturn:
@@ -55,13 +52,6 @@ def openapi_view(request: HttpRequest, api: "NinjaAPI") -> HttpResponse:
 def openapi_view_cdn(
     request: HttpRequest, context: Optional[DictStrAny] = None
 ) -> HttpResponse:
-    import os
-
-    from django.http import HttpResponse
-    from django.template import RequestContext, Template
-
-    tpl_file = os.path.join(os.path.dirname(__file__), view_cdn_tpl)
-    with open(tpl_file) as f:
-        tpl = Template(f.read())
-    html = tpl.render(RequestContext(request, context))
+    tpl = local_templates_engine.get_template(view_cdn_tpl)
+    html = tpl.render(context, request)
     return HttpResponse(html)
