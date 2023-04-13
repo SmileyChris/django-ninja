@@ -294,11 +294,12 @@ class OpenAPISchema(dict):
             return None
         result = []
         for auth in operation.auth_callbacks:
-            if hasattr(auth, "openapi_security_schema"):
+            openapi_security_schema = getattr(auth, "openapi_security_schema")
+            if openapi_security_schema:
                 scopes: List[DictStrAny] = []  # TODO: scopes
                 name = auth.__class__.__name__
                 result.append({name: scopes})  # TODO: check if unique
-                self.securitySchemes[name] = auth.openapi_security_schema  # type: ignore
+                self.securitySchemes[name] = openapi_security_schema
         return result
 
     def get_components(self) -> DictStrAny:

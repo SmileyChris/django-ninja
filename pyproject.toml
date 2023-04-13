@@ -48,7 +48,7 @@ requires = [
     "pydantic >=1.6,<2.0.0"
 ]
 description-file = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.7.4"
 
 
 [tool.flit.metadata.urls]
@@ -66,7 +66,7 @@ test = [
     "black",
     "isort",
     "flake8",
-    "mypy==0.931",
+    "mypy==1.1.1",
     "django-stubs",
 ]
 doc = [

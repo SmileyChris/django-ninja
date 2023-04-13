@@ -27,6 +27,7 @@ from ninja.utils import check_csrf
 
 if TYPE_CHECKING:
     from ninja import NinjaAPI, Router  # pragma: no cover
+    from ninja.utils import HttpRequestWithCSRF
 
 __all__ = ["Operation", "PathView", "ResponseObject"]
 
@@ -50,7 +51,7 @@ class Operation:
         exclude_defaults: bool = False,
         exclude_none: bool = False,
         include_in_schema: bool = True,
-        url_name: str = None,
+        url_name: Optional[str] = None,
         openapi_extra: Optional[Dict[str, Any]] = None,
     ) -> None:
         self.is_async = False
@@ -92,7 +93,7 @@ class Operation:
 
         if hasattr(view_func, "_ninja_contribute_to_operation"):
             # Allow 3rd party code to contribute to the operation behaviour
-            view_func._ninja_contribute_to_operation(self)  # type: ignore
+            view_func._ninja_contribute_to_operation(self)
 
     def run(self, request: HttpRequest, **kw: Any) -> HttpResponseBase:
         error = self._run_checks(request)
@@ -138,7 +139,7 @@ class Operation:
 
         # csrf:
         if self.api.csrf:
-            error = check_csrf(request, self.view_func)
+            error = check_csrf(cast(HttpRequestWithCSRF, request), self.view_func)
             if error:
                 return error
 
@@ -375,5 +376,5 @@ class PathView:
 class ResponseObject:
     "Basically this is just a helper to be able to pass response to pydantic's from_orm"
 
-    def __init__(self, response: HttpResponse) -> None:
+    def __init__(self, response: Any) -> None:
         self.response = response

@@ -350,7 +350,7 @@ class NinjaAPI:
         *,
         auth: Any = NOT_SET,
         tags: Optional[List[str]] = None,
-        parent_router: Router = None,
+        parent_router: Optional[Router] = None,
     ) -> None:
         if auth is not NOT_SET:
             router.auth = auth
@@ -403,8 +403,8 @@ class NinjaAPI:
         request: HttpRequest,
         data: Any,
         *,
-        status: int = None,
-        temporal_response: HttpResponse = None,
+        status: Optional[int] = None,
+        temporal_response: Optional[HttpResponse] = None,
     ) -> HttpResponse:
         if temporal_response:
             status = temporal_response.status_code

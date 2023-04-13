@@ -1,11 +1,16 @@
 import inspect
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 
 from django.conf import settings
 from django.http import HttpRequest, HttpResponseForbidden
 from django.middleware.csrf import CsrfViewMiddleware
 
 __all__ = ["check_csrf", "is_debug_server", "normalize_path"]
+
+if TYPE_CHECKING:
+
+    class HttpRequestWithCSRF(HttpRequest):
+        csrf_processing_done: bool
 
 
 def replace_path_param_notation(path: str) -> str:
@@ -19,10 +24,10 @@ def normalize_path(path: str) -> str:
 
 
 def check_csrf(
-    request: HttpRequest, callback: Callable
+    request: HttpRequestWithCSRF, callback: Callable
 ) -> Optional[HttpResponseForbidden]:
     mware = CsrfViewMiddleware(lambda x: HttpResponseForbidden())  # pragma: no cover
-    request.csrf_processing_done = False  # type: ignore
+    request.csrf_processing_done = False
     mware.process_request(request)
     return mware.process_view(request, callback, (), {})
 

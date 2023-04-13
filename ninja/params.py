@@ -12,27 +12,27 @@ class Param(FieldInfo):
         self,
         default: Any,
         *,
-        alias: str = None,
-        title: str = None,
-        description: str = None,
-        gt: float = None,
-        ge: float = None,
-        lt: float = None,
-        le: float = None,
-        min_length: int = None,
-        max_length: int = None,
-        regex: str = None,
+        alias: Optional[str] = None,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        gt: Optional[float] = None,
+        ge: Optional[float] = None,
+        lt: Optional[float] = None,
+        le: Optional[float] = None,
+        min_length: Optional[int] = None,
+        max_length: Optional[int] = None,
+        regex: Optional[str] = None,
         example: Any = None,
         examples: Optional[Dict[str, Any]] = None,
-        deprecated: bool = None,
+        deprecated: Optional[bool] = None,
         include_in_schema: bool = True,
-        # param_name: str = None,
-        # param_type: Any = None,
+        # param_name: Optional[str] = None,
+        # param_type: Optional[Any] = None,
         **extra: Any,
     ):
         self.deprecated = deprecated
-        # self.param_name: str = None
-        # self.param_type: Any = None
+        # self.param_name: Optional[str] = None
+        # self.param_type: Optional[Any] = None
         self.model_field: Optional[ModelField] = None
         if example:
             extra["example"] = example
