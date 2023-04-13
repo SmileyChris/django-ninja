@@ -294,7 +294,7 @@ class OpenAPISchema(dict):
             return None
         result = []
         for auth in operation.auth_callbacks:
-            openapi_security_schema = getattr(auth, "openapi_security_schema")
+            openapi_security_schema = getattr(auth, "openapi_security_schema", None)
             if openapi_security_schema:
                 scopes: List[DictStrAny] = []  # TODO: scopes
                 name = auth.__class__.__name__
