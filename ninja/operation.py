@@ -139,7 +139,7 @@ class Operation:
 
         # csrf:
         if self.api.csrf:
-            error = check_csrf(cast(HttpRequestWithCSRF, request), self.view_func)
+            error = check_csrf(cast("HttpRequestWithCSRF", request), self.view_func)
             if error:
                 return error
 
