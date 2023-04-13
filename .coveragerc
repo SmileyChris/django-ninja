@@ -8,3 +8,6 @@ branch = True
 fail_under = 100
 skip_covered = True
 show_missing = True
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:

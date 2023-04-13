@@ -26,7 +26,7 @@ from ninja.types import DictStrAny
 from ninja.utils import check_csrf
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI, Router  # pragma: no cover
+    from ninja import NinjaAPI, Router
     from ninja.utils import HttpRequestWithCSRF
 
 __all__ = ["Operation", "PathView", "ResponseObject"]

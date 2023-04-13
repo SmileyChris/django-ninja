@@ -27,7 +27,7 @@ from ninja.types import TCallable
 from ninja.utils import is_debug_server, normalize_path
 
 if TYPE_CHECKING:
-    from .operation import Operation  # pragma: no cover
+    from .operation import Operation
 
 __all__ = ["NinjaAPI"]
 

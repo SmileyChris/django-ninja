@@ -9,7 +9,7 @@ from django.http import Http404, HttpRequest, HttpResponse
 from ninja.types import DictStrAny
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 __all__ = [
     "ConfigError",

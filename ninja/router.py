@@ -9,7 +9,7 @@ from ninja.types import TCallable
 from ninja.utils import normalize_path, replace_path_param_notation
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 
 __all__ = ["Router"]

@@ -11,7 +11,7 @@ from ninja.errors import HttpError
 from ninja.types import DictStrAny
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 __all__ = [
     "ParamModel",

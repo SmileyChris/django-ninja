@@ -10,8 +10,7 @@ from ninja.responses import Response
 from ninja.types import DictStrAny
 
 if TYPE_CHECKING:
-    # if anyone knows a cleaner way to make mypy happy - welcome
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 __all__ = ["default_home", "openapi_json", "openapi_view", "openapi_view_cdn"]
 

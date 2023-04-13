@@ -25,7 +25,7 @@ class FilterConfig(BaseConfig):
 
 class FilterSchema(Schema):
     if TYPE_CHECKING:
-        __config__: ClassVar[Type[FilterConfig]] = FilterConfig  # pragma: no cover
+        __config__: ClassVar[Type[FilterConfig]] = FilterConfig
 
     Config = FilterConfig
 

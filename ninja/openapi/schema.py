@@ -25,7 +25,7 @@ from ninja.types import DictStrAny
 from ninja.utils import normalize_path
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 REF_PREFIX: str = "#/components/schemas/"
 

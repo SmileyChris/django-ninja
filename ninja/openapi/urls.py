@@ -6,7 +6,7 @@ from django.urls import path
 from .views import default_home, openapi_json, openapi_view
 
 if TYPE_CHECKING:
-    from ninja import NinjaAPI  # pragma: no cover
+    from ninja import NinjaAPI
 
 __all__ = ["get_openapi_urls", "get_root_url"]
 
