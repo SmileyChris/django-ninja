@@ -213,7 +213,8 @@ class Operation:
     def _get_values(
         self, request: HttpRequest, path_params: Any, temporal_response: HttpResponse
     ) -> DictStrAny:
-        values, errors = {}, []
+        values: DictStrAny = {}
+        errors = []
         for model in self.models:
             try:
                 data = model.resolve(request, self.api, path_params)
@@ -221,7 +222,11 @@ class Operation:
             except pydantic.ValidationError as e:
                 items = []
                 for i in e.errors():
-                    i["loc"] = (model._param_source,) + model._flatten_map_reverse.get(
+                    if model._param_source:
+                        new_loc = (model._param_source,)
+                    else:
+                        new_loc = ()
+                    i["loc"] = new_loc + getattr(model, "_flatten_map_reverse", {}).get(
                         i["loc"], i["loc"]
                     )
                     items.append(dict(i))

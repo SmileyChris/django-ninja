@@ -90,7 +90,7 @@ class ViewSignature:
                 sorted(
                     name
                     for name in self.path_params_names
-                    if not (path_model and name in path_model._flatten_map)
+                    if not (path_model and name in getattr(path_model, "_flatten_map"))
                 )
             )
             if missing:

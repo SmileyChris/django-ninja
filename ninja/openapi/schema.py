@@ -9,6 +9,7 @@ from typing import (
     Generator,
     List,
     Optional,
+    Sequence,
     Set,
     Tuple,
     Type,
@@ -195,7 +196,7 @@ class OpenAPISchema(dict):
     def _flatten_schema(self, model: Type[ParamModel]) -> DictStrAny:
         params = self._extract_parameters(model)
         flattened = {
-            "title": model.__name__,  # type: ignore
+            "title": model.__name__,
             "type": "object",
             "properties": {p["name"]: p["schema"] for p in params},
         }
@@ -213,9 +214,7 @@ class OpenAPISchema(dict):
         if hasattr(model, "_flatten_map"):
             schema = self._flatten_schema(cast(Type[ParamModel], model))
         else:
-            schema = model_schema(
-                cast(Type[BaseModel], model), ref_prefix=REF_PREFIX, by_alias=by_alias
-            )
+            schema = model_schema(model, ref_prefix=REF_PREFIX, by_alias=by_alias)
 
         # move Schemas from definitions
         if schema.get("definitions"):
@@ -231,7 +230,7 @@ class OpenAPISchema(dict):
             return schema, True
 
     def _create_multipart_schema_from_models(
-        self, models: List[Type[BaseModel]]
+        self, models: Sequence[Type[BaseModel]]
     ) -> Tuple[DictStrAny, str]:
         # We have File and Form or Body, so we need to use multipart (File)
         content_type = BODY_CONTENT_TYPES["file"]
@@ -254,7 +253,7 @@ class OpenAPISchema(dict):
 
         if len(models) == 1:
             model = models[0]
-            content_type = BODY_CONTENT_TYPES[model._param_source]
+            content_type = BODY_CONTENT_TYPES[cast(str, model._param_source)]
             schema, required = self._create_schema_from_model(
                 model, remove_level=model._param_source == "body"
             )
