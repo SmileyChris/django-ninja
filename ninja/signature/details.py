@@ -1,7 +1,7 @@
 import inspect
 import warnings
 from collections import defaultdict, namedtuple
-from typing import Any, Callable, Dict, Generator, List, Optional, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Tuple, Type
 
 import pydantic
 from django.http import HttpResponse
@@ -14,7 +14,7 @@ from ninja.compatibility.util import (
 )
 from ninja.errors import ConfigError
 from ninja.params import Body, File, Form, _MultiPartBody
-from ninja.params_models import TModel, TModels
+from ninja.params_models import ParamModel
 from ninja.signature.utils import get_path_param_names, get_typed_signature
 
 __all__ = [
@@ -76,7 +76,7 @@ class ViewSignature:
                     FuncParam(p_name, p_source.alias or p_name, p_source, p_type, False)
                 )
 
-        self.models: TModels = self._create_models()
+        self.models: List[Type[ParamModel]] = self._create_models()
 
         self._validate_view_path_params()
 
@@ -104,7 +104,7 @@ class ViewSignature:
                     source=None,
                 )
 
-    def _create_models(self) -> TModels:
+    def _create_models(self) -> List[Type[ParamModel]]:
         params_by_source_cls: Dict[Any, List[FuncParam]] = defaultdict(list)
         for param in self.params:
             param_source_cls = type(param.source)
@@ -184,7 +184,9 @@ class ViewSignature:
 
         return flatten_map
 
-    def _model_flatten_map(self, model: TModel, prefix: str) -> Generator:
+    def _model_flatten_map(
+        self, model: Type[pydantic.BaseModel], prefix: str
+    ) -> Generator:
         for field in model.__fields__.values():
             field_name = field.alias
             name = f"{prefix}{self.FLATTEN_PATH_SEP}{field_name}"

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, List, Optional, Tuple, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Optional, Tuple, Type, TypeVar
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -25,7 +25,6 @@ __all__ = [
 ]
 
 TModel = TypeVar("TModel", bound="ParamModel")
-TModels = List[TModel]
 
 
 def NestedDict() -> DictStrAny:
@@ -33,7 +32,7 @@ def NestedDict() -> DictStrAny:
 
 
 class ParamModel(BaseModel, ABC):
-    _param_source = None
+    _param_source: Optional[str] = None
 
     @classmethod
     @abstractmethod

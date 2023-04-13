@@ -20,7 +20,7 @@ from pydantic.schema import model_schema
 
 from ninja.constants import NOT_SET
 from ninja.operation import Operation
-from ninja.params_models import TModel, TModels
+from ninja.params_models import ParamModel
 from ninja.types import DictStrAny
 from ninja.utils import normalize_path
 
@@ -152,7 +152,7 @@ class OpenAPISchema(dict):
         return result
 
     @classmethod
-    def _extract_parameters(cls, model: TModel) -> List[DictStrAny]:
+    def _extract_parameters(cls, model: Type[ParamModel]) -> List[DictStrAny]:
         result = []
 
         schema = model_schema(cast(Type[BaseModel], model), ref_prefix=REF_PREFIX)
@@ -192,7 +192,7 @@ class OpenAPISchema(dict):
 
         return result
 
-    def _flatten_schema(self, model: TModel) -> DictStrAny:
+    def _flatten_schema(self, model: Type[ParamModel]) -> DictStrAny:
         params = self._extract_parameters(model)
         flattened = {
             "title": model.__name__,  # type: ignore
@@ -206,12 +206,12 @@ class OpenAPISchema(dict):
 
     def _create_schema_from_model(
         self,
-        model: TModel,
+        model: Type[BaseModel],
         by_alias: bool = True,
         remove_level: bool = True,
     ) -> Tuple[DictStrAny, bool]:
         if hasattr(model, "_flatten_map"):
-            schema = self._flatten_schema(model)
+            schema = self._flatten_schema(cast(Type[ParamModel], model))
         else:
             schema = model_schema(
                 cast(Type[BaseModel], model), ref_prefix=REF_PREFIX, by_alias=by_alias
@@ -231,7 +231,7 @@ class OpenAPISchema(dict):
             return schema, True
 
     def _create_multipart_schema_from_models(
-        self, models: TModels
+        self, models: List[Type[BaseModel]]
     ) -> Tuple[DictStrAny, str]:
         # We have File and Form or Body, so we need to use multipart (File)
         content_type = BODY_CONTENT_TYPES["file"]

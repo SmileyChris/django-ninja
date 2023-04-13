@@ -19,7 +19,7 @@ from django.http.response import HttpResponseBase
 
 from ninja.constants import NOT_SET
 from ninja.errors import AuthenticationError, ConfigError, ValidationError
-from ninja.params_models import TModels
+from ninja.params_models import ParamModel
 from ninja.schema import Schema
 from ninja.signature import ViewSignature, is_async
 from ninja.types import DictStrAny
@@ -67,7 +67,7 @@ class Operation:
         self._set_auth(auth)
 
         self.signature = ViewSignature(self.path, self.view_func)
-        self.models: TModels = self.signature.models
+        self.models: List[Type[ParamModel]] = self.signature.models
 
         self.response_models: Dict[Any, Any]
         if response is NOT_SET:
