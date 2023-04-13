@@ -10,8 +10,6 @@ from ninja import UploadedFile, params
 from ninja.compatibility.util import (
     UNION_TYPES,
     get_args,
-)
-from ninja.compatibility.util import (
     get_origin as get_collection_origin,
 )
 from ninja.errors import ConfigError
